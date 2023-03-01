@@ -1,4 +1,7 @@
 import React, { useContext } from "react";
+import { FaFacebook } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+import { GoMarkGithub } from "react-icons/go";
 import { Link } from "react-router-dom";
 import img from "../../assets/images/login/login.svg";
 import { AuthContext } from "../../context/AuthProvider/AuthProvider";
@@ -62,6 +65,20 @@ const Login = () => {
               <input className="btn btn-error" type="submit" value="Login" />
             </div>
           </form>
+          <p className="text-center font-semibold text-slate-700">
+            Or Sign Up with
+          </p>
+          <div className="text-center my-4 text-3xl">
+            <button>
+              <FaFacebook className="text-blue-600" />
+            </button>
+            <button>
+              <FcGoogle className="ml-4" />
+            </button>
+            <button className="ml-4">
+              <GoMarkGithub />
+            </button>
+          </div>
           <p className="text-center">
             New to Genius Car?{" "}
             <Link className="font-bold text-orange-600" to="/signup">

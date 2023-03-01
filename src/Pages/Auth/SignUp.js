@@ -2,9 +2,12 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import img from "../../assets/images/login/login.svg";
 import { AuthContext } from "../../context/AuthProvider/AuthProvider";
+import { FcGoogle } from "react-icons/fc";
+import { GoMarkGithub } from "react-icons/go";
+import { FaFacebook } from "react-icons/fa";
 
 const SignUp = () => {
-  const { createUser } = useContext(AuthContext);
+  const { createUser, googleSignIn } = useContext(AuthContext);
 
   const handleSignUp = event => {
     event.preventDefault();
@@ -17,6 +20,15 @@ const SignUp = () => {
       .then(result => {
         const user = result.user;
         form.reset();
+        console.log(user);
+      })
+      .catch(e => console.error(e));
+  };
+
+  const handleGoogleSign = () => {
+    googleSignIn()
+      .then(result => {
+        const user = result.user;
         console.log(user);
       })
       .catch(e => console.error(e));
@@ -75,6 +87,20 @@ const SignUp = () => {
               <input className="btn btn-error" type="submit" value="Sign Up" />
             </div>
           </form>
+          <p className="text-center font-semibold text-slate-700">
+            Or Sign Up with
+          </p>
+          <div className="text-center my-4 text-3xl">
+            <button>
+              <FaFacebook className="text-blue-600" />
+            </button>
+            <button onClick={handleGoogleSign}>
+              <FcGoogle className="ml-4" />
+            </button>
+            <button className="ml-4">
+              <GoMarkGithub />
+            </button>
+          </div>
           <p className="text-center">
             Already Have an Account?{" "}
             <Link className="font-bold text-orange-600" to="/login">

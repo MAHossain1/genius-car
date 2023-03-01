@@ -11,3 +11,6 @@
 
   /* background: linear-gradient(90deg, #151515 0%, rgba(21, 21, 21, 0) 100%);; */
 }
+.border-radius {
+  border-radius: 15px;
+}
