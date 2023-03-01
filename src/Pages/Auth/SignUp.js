@@ -7,20 +7,35 @@ import { GoMarkGithub } from "react-icons/go";
 import { FaFacebook } from "react-icons/fa";
 
 const SignUp = () => {
-  const { createUser, googleSignIn } = useContext(AuthContext);
+  const { createUser, googleSignIn, updateUserProfile } =
+    useContext(AuthContext);
 
   const handleSignUp = event => {
     event.preventDefault();
     const form = event.target;
     const name = form.name.value;
+    const photoURL = form.photourl.value;
     const email = form.email.value;
     const password = form.password.value;
 
     createUser(email, password)
       .then(result => {
         const user = result.user;
+        handleUpdateUserProfile(name, photoURL);
         form.reset();
         console.log(user);
+      })
+      .catch(e => console.error(e));
+  };
+
+  const handleUpdateUserProfile = (name, photoURL) => {
+    const profile = {
+      displayName: name,
+      photoURL: photoURL,
+    };
+    updateUserProfile(profile)
+      .then(() => {
+        alert("User profile updated successfully");
       })
       .catch(e => console.error(e));
   };
@@ -51,6 +66,17 @@ const SignUp = () => {
                 type="text"
                 name="name"
                 placeholder="Your Name"
+                className="input input-bordered"
+              />
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">photoURL</span>
+              </label>
+              <input
+                type="text"
+                name="photourl"
+                placeholder="Enter your photo link"
                 className="input input-bordered"
               />
             </div>

@@ -1,21 +1,44 @@
-import React from "react";
+import React, { useContext } from "react";
+import { FaUserAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import logo from "../../../assets/logo.svg";
+import { AuthContext } from "../../../context/AuthProvider/AuthProvider";
 
 const Header = () => {
+  const { user, logOut } = useContext(AuthContext);
+
+  const handleSignOut = () => {
+    logOut()
+      .then(() => {})
+      .catch(e => console.error(e));
+  };
+
   const menuItems = (
     <>
-      <li className="font-semibold">
+      <li className="font-semibold mr-2">
         {" "}
         <Link to="/">Home</Link>
       </li>
-      <li className="font-semibold">
-        {" "}
-        <Link to="/login">Login</Link>
-      </li>
-      <li className="font-semibold">
-        {" "}
-        <Link to="/signup">Sign Up</Link>
+
+      <li>
+        {user?.uid ? (
+          <button
+            onClick={handleSignOut}
+            className="btn btn-outline btn-error "
+          >
+            Sign Out
+          </button>
+        ) : (
+          <>
+            {" "}
+            <Link className="font-semibold" to="/login">
+              Login
+            </Link>
+            <Link className="font-semibold" to="/signup">
+              Sign Up
+            </Link>
+          </>
+        )}
       </li>
     </>
   );
@@ -55,6 +78,20 @@ const Header = () => {
         <ul className="menu menu-horizontal px-1">{menuItems}</ul>
       </div>
       <div className="navbar-end">
+        <label
+          className="btn btn-ghost btn-circle avatar tooltip tooltip-left tooltip-info"
+          data-tip={user?.displayName}
+        >
+          <div className="w-10 rounded-full">
+            {user?.uid ? (
+              <img src={user?.photoURL} alt="" />
+            ) : (
+              <p className="text-3xl pl-2 pt-1">
+                <FaUserAlt />
+              </p>
+            )}
+          </div>
+        </label>
         <button className="btn btn-outline btn-error">Appointment</button>
       </div>
     </div>

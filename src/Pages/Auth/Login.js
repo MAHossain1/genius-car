@@ -7,7 +7,7 @@ import img from "../../assets/images/login/login.svg";
 import { AuthContext } from "../../context/AuthProvider/AuthProvider";
 
 const Login = () => {
-  const { userSignin } = useContext(AuthContext);
+  const { userSignin, googleSignIn } = useContext(AuthContext);
 
   const handleLogin = event => {
     event.preventDefault();
@@ -20,6 +20,15 @@ const Login = () => {
         const user = result.user;
         alert("user logged in successfully");
         form.reset();
+        console.log(user);
+      })
+      .catch(e => console.error(e));
+  };
+
+  const handleGoogleSign = () => {
+    googleSignIn()
+      .then(result => {
+        const user = result.user;
         console.log(user);
       })
       .catch(e => console.error(e));
@@ -72,7 +81,7 @@ const Login = () => {
             <button>
               <FaFacebook className="text-blue-600" />
             </button>
-            <button>
+            <button onClick={handleGoogleSign}>
               <FcGoogle className="ml-4" />
             </button>
             <button className="ml-4">
