@@ -20,7 +20,34 @@ const Header = () => {
         <Link to="/">Home</Link>
       </li>
 
-      <li>
+      {user?.email ? (
+        <>
+          <li className="font-semibold mr-2">
+            {" "}
+            <Link to="/orders">Orders</Link>
+          </li>
+          <button
+            onClick={handleSignOut}
+            className="btn btn-outline btn-error "
+          >
+            Sign Out
+          </button>
+        </>
+      ) : (
+        <>
+          <li>
+            {" "}
+            <Link className="font-semibold" to="/login">
+              Login
+            </Link>
+            <Link className="font-semibold" to="/signup">
+              Sign Up
+            </Link>
+          </li>
+        </>
+      )}
+
+      {/* <li>
         {user?.uid ? (
           <button
             onClick={handleSignOut}
@@ -30,16 +57,10 @@ const Header = () => {
           </button>
         ) : (
           <>
-            {" "}
-            <Link className="font-semibold" to="/login">
-              Login
-            </Link>
-            <Link className="font-semibold" to="/signup">
-              Sign Up
-            </Link>
+          
           </>
         )}
-      </li>
+      </li> */}
     </>
   );
 

@@ -5,6 +5,7 @@ import { AuthContext } from "../../context/AuthProvider/AuthProvider";
 import { FcGoogle } from "react-icons/fc";
 import { GoMarkGithub } from "react-icons/go";
 import { FaFacebook } from "react-icons/fa";
+import { toast } from "react-hot-toast";
 
 const SignUp = () => {
   const { createUser, googleSignIn, updateUserProfile } =
@@ -35,7 +36,7 @@ const SignUp = () => {
     };
     updateUserProfile(profile)
       .then(() => {
-        alert("User profile updated successfully");
+        toast.success("User profile updated successfully");
       })
       .catch(e => console.error(e));
   };

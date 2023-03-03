@@ -1,13 +1,17 @@
 import React, { useContext } from "react";
+import { toast } from "react-hot-toast";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { GoMarkGithub } from "react-icons/go";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import img from "../../assets/images/login/login.svg";
 import { AuthContext } from "../../context/AuthProvider/AuthProvider";
 
 const Login = () => {
-  const { userSignin, googleSignIn } = useContext(AuthContext);
+  const { userSignIn, googleSignIn } = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location?.state?.from?.pathname || "/";
 
   const handleLogin = event => {
     event.preventDefault();
@@ -15,10 +19,13 @@ const Login = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-    userSignin(email, password)
+    userSignIn(email, password)
       .then(result => {
         const user = result.user;
-        alert("user logged in successfully");
+        if (user.uid) {
+          navigate(from, { replace: true });
+        }
+        toast.success("user logged in successfully");
         form.reset();
         console.log(user);
       })
