@@ -4,20 +4,35 @@ import { AuthContext } from "../../context/AuthProvider/AuthProvider";
 import OrderRow from "./OrderRow";
 
 const Orders = () => {
-  const { user } = useContext(AuthContext);
+  const { user, logOut } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/orders?email=${user?.email}`)
-      .then(res => res.json())
-      .then(data => setOrders(data));
-  }, [user?.email]);
+    fetch(`http://localhost:5000/orders?email=${user?.email}`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("geniusToken")}`,
+      },
+    })
+      .then(res => {
+        if (res.status === 500 || res.status === 401) {
+          logOut();
+        }
+        return res.json();
+      })
+      .then(data => {
+        // console.log("received", data);
+        setOrders(data);
+      });
+  }, [user?.email, logOut]);
 
   const handleDelete = id => {
     const proceed = window.confirm("Are you sure,to cancel this order?");
     if (proceed) {
       fetch(`http://localhost:5000/orders/${id}`, {
         method: "DELETE",
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("geniusToken")}`,
+        },
       })
         .then(res => res.json())
         .then(data => {
@@ -35,6 +50,7 @@ const Orders = () => {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("geniusToken")}`,
       },
       body: JSON.stringify({ status: "Approved" }),
     })
@@ -49,28 +65,6 @@ const Orders = () => {
         setOrders(newOrders);
       });
   };
-
-  // const handleStatusUpdate = id => {
-  //     fetch(`http://localhost:5000/orders/${id}`, {
-  //         method: 'PATCH',
-  //         headers: {
-  //             'content-type': 'application/json'
-  //         },
-  //         body: JSON.stringify({status: 'Approved'})
-  //     })
-  //     .then(res => res.json())
-  //     .then(data => {
-  //         console.log(data);
-  //         if(data.modifiedCount > 0) {
-  //             const remaining = orders.filter(odr => odr._id !== id);
-  //             const approving = orders.find(odr => odr._id === id);
-  //             approving.status = 'Approved'
-
-  //             const newOrders = [approving, ...remaining];
-  //             setOrders(newOrders);
-  //         }
-  //     })
-  // }
 
   return (
     <div className="my-10">
